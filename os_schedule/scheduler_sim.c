@@ -172,14 +172,12 @@ void run_scheduler_rr() {
 			p->state = SLEEP;
 			p->io_wait_time = get_random(1,5);
 		} else {
-			if (p->remaining_quantum == 0) {
-				printf("[cpu] child %d is Running...(quantum: %d)\n", p->id,  p-> remaining_quantum);
+			printf("[cpu] child %d is Running...(quantum: %d)\n", p->id,  p-> remaining_quantum);
 				
-				if (p->remaining_quantum == 0) {
-					printf("	-> child %d quantum expired, switch.\n", p->id);
-					p->state = READY;
-					current_idx = (current_idx + 1) % NUM_CHILDREN;
-				}
+			if (p->remaining_quantum == 0) {
+				printf("	-> child %d quantum expired, switch.\n", p->id);
+				p->state = READY;
+				current_idx = (current_idx + 1) % NUM_CHILDREN;
 			}
 		}
 	}
