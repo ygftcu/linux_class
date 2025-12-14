@@ -173,9 +173,13 @@ void run_scheduler_rr() {
 			p->io_wait_time = get_random(1,5);
 		} else {
 			if (p->remaining_quantum == 0) {
-				printf("[cpu] child %d is Running...\n", p->id);
-				p->state = READY;
-				current_idx = (current_idx + 1) % NUM_CHILDREN;
+				printf("[cpu] child %d is Running...(quantum: %d)\n", p->id,  p-> remaining_quantum);
+				
+				if (p->remaining_quantum == 0) {
+					printf("	-> child %d quantum expired, switch.\n", p->id);
+					p->state = READY;
+					current_idx = (current_idx + 1) % NUM_CHILDREN;
+				}
 			}
 		}
 	}
@@ -357,7 +361,7 @@ void run_scheduler_srtf() {
 void print_stats() {
 	printf("                      PERFORMANCE ANALYSIS                         \n");
 	printf("===================================================================\n");
-	printf("PID/tWait Time/tResponse Time/tTurnaround Time\n");
+	printf("PID\tWait Time\tResponse Time\tTurnaround Time\n");
 	printf("                                                                   \n");
 	
 	double total_wait = 0, total_resp = 0, total_turn = 0;
@@ -374,7 +378,7 @@ void print_stats() {
 	}
 
 	printf("-------------------------------------------------------------------\n");
-	printf("AVG\t%.2f\t\t%2.f\t\t%.2f\n",
+	printf("AVG\t%.2f\t\t%.2f\t\t%.2f\n",
 			total_wait/NUM_CHILDREN, total_resp/NUM_CHILDREN, total_turn/NUM_CHILDREN);
 
 	printf("\n[gantt chart [100ticks]\n");
