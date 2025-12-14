@@ -391,6 +391,7 @@ void print_stats() {
 	}
 	
 	printf("...\n");
+	printf("\n[total simulation ticks]: %d\n", total_ticks);
 }
 
 int main(int argc, char *argv[]) {
