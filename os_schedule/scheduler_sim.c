@@ -424,9 +424,17 @@ int main(int argc, char *argv[]) {
 	int mode = 1;
 	if (argc > 1) mode = atoi(argv[1]);
 
+	if (argc > 2) {
+		current_quantum_setting = atoi(argv[2]);
+		if (current_quantum_setting < 1) current_quantum_setting = 1;
+	}
+
 	if (mode == 2) run_scheduler_sjf();
 	else if (mode == 3) run_scheduler_srtf();
-	else run_scheduler_rr();
+	else {
+		printf("[Init] Round Robin with Quantum = %d\n", current_quantum_setting);
+		run_scheduler_rr();
+	}
 
 	print_stats();
 
